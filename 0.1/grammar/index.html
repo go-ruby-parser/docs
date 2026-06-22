@@ -442,9 +442,11 @@ differential-tested against MRI 4.0.5.</p>
 <ul>
 <li><strong>Literals:</strong> integers (<code>Bignum</code>/arbitrary precision, radix <code>0x</code>/<code>0o</code>/<code>0b</code>/<code>0d</code>,
   underscores), floats (incl. <strong>scientific <code>1.5e3</code></strong>), strings (double- <strong>and
-  single-quoted</strong>, interpolation, heredocs <code>&lt;&lt;</code>/<code>&lt;&lt;-</code>/<code>&lt;&lt;~</code>), symbols (incl.
-  quoted/operator), <code>%w</code>/<code>%i</code>/<code>%W</code>/<code>%I</code> arrays, arrays, hashes, ranges (incl.
-  beginless/endless), regexps (<code>/re/imx</code>), <code>true</code>/<code>false</code>/<code>nil</code>.</li>
+  single-quoted</strong>, interpolation, heredocs <code>&lt;&lt;</code>/<code>&lt;&lt;-</code>/<code>&lt;&lt;~</code>, <code>%q</code>/<code>%Q</code> literals,
+  the <code>\a</code>/<code>\b</code>/<code>\v</code>/<code>\f</code>/<code>\s</code>/<code>\n</code>/<code>\t</code>/<code>\r</code>/<code>\e</code>/<code>\0</code> escapes), symbols (incl.
+  quoted/operator), <code>%w</code>/<code>%i</code>/<code>%W</code>/<code>%I</code> arrays, arrays, hashes (incl. the <code>{x:}</code>
+  value-shorthand), ranges (incl. beginless/endless), regexps (<code>/re/imx</code>),
+  <code>true</code>/<code>false</code>/<code>nil</code>.</li>
 <li><strong>Operators:</strong> arithmetic, comparison/<code>&lt;=&gt;</code>, <code>==</code>/<code>===</code>, bitwise/shift,
   <code>&amp;&amp;</code>/<code>||</code>/<code>and</code>/<code>or</code>/<code>not</code>, ternary, <code>::</code> scope, safe navigation <code>&amp;.</code>,
   compound assignment (<code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>%=</code>, <code>&lt;&lt;=</code>, <code>||=</code>, <code>&amp;&amp;=</code>).</li>
@@ -454,23 +456,23 @@ differential-tested against MRI 4.0.5.</p>
   <code>else</code>/<code>ensure</code>/<code>retry</code>, <code>break</code>/<code>next</code>/<code>return</code>, <code>loop</code>.</li>
 <li><strong>Methods/blocks:</strong> required/optional/<code>*splat</code>/keyword/<code>**rest</code>/<code>&amp;block</code>
   params, endless methods (<code>def f = expr</code>), setters, operator/<code>[]</code>/<code>[]=</code> method
-  names, <code>{ }</code> / <code>do…end</code> blocks, <code>(a, b)</code> destructuring group params, stabby
-  lambdas <code>-&gt;(){}</code>, numbered params (<code>_1</code>) and <code>it</code>, <code>yield</code>, <code>super</code>.</li>
+  names, <strong>operator-method calls</strong> (<code>1.+(2)</code>), <code>{ }</code> / <code>do…end</code> blocks,
+  <code>(a, b)</code> destructuring group params, stabby lambdas <code>-&gt;(){}</code>, numbered params
+  (<code>_1</code>) and <code>it</code>, <code>yield</code>, <code>super</code>, <strong>multiple-value <code>return a, b</code></strong>.</li>
 <li><strong>Classes/modules/metaprogramming:</strong> <code>class</code>/<code>module</code>, inheritance, <code>@ivars</code>,
-  constants, <code>def self.</code>, multiple assignment / destructuring.</li>
+  <strong><code>@@class variables</code></strong>, constants, singleton method defs
+  (<code>def self.foo</code>/<code>def obj.foo</code>/<code>def Const.foo</code>), <strong>global-variable assignment</strong>
+  (<code>$g = …</code>), multiple assignment / destructuring, <strong>adjacent string-literal
+  concatenation</strong> (<code>"a" "b"</code>).</li>
 </ul>
 <h2 id="known-limitations">Known limitations<a class="headerlink" href="#known-limitations" title="Permanent link">&para;</a></h2>
 <p>These are not yet parsed (they remain on go-embedded-ruby's roadmap;
 contributions welcome):</p>
 <ul>
-<li>multiple-value <code>return a, b</code> (a single expression only)</li>
-<li>class variables <code>@@cvar</code>, and global-variable <strong>assignment</strong> (<code>$g = …</code>)</li>
-<li>operator-method <strong>calls</strong> <code>1.+(2)</code>, hash-shorthand <code>{x:}</code></li>
 <li>paren-less command calls with keyword/splat/block args (<code>foo a: 1</code>)</li>
-<li>adjacent string-literal concatenation (<code>"a" "b"</code>)</li>
-<li>splat/default <strong>block</strong> parameters (<code>{ |*a| }</code>, <code>{ |a = 1| }</code>), empty <code>||</code>
-  block params, and the positional <code>Class(a)</code> find-pattern (<code>Class[a]</code> is
-  supported)</li>
+<li>splat/default <strong>block</strong> parameters (<code>{ |*a| }</code>, <code>{ |a = 1| }</code>) and empty <code>||</code>
+  block params (the spaced <code>{ | | }</code> is supported)</li>
+<li>the positional <code>Class(a)</code> find-pattern (<code>Class[a]</code> is supported)</li>
 </ul>
 <h2 id="errors">Errors<a class="headerlink" href="#errors" title="Permanent link">&para;</a></h2>
 <p><code>Parse</code> returns a parse error carrying the line number; it never panics on
