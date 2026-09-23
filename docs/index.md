@@ -7,12 +7,19 @@ analysers, doc generators, LSP servers, transpilers) in pure Go.
 
 It was extracted from the [go-embedded-ruby](https://github.com/go-embedded-ruby/ruby)
 interpreter — which now consumes it — and is developed test-first against MRI
-Ruby 4.0.5, with **100% coverage** enforced in CI across the six 64-bit targets.
+Ruby 4.0.5. **100% coverage** is enforced in CI on all three OS lanes (ubuntu,
+macOS, windows); the suite additionally runs on all **six 64-bit targets** —
+`amd64` and `arm64` natively, `riscv64`/`loong64`/`ppc64le`/`s390x` under QEMU —
+and on `js/wasm` and `wasip1/wasm`.
+
+**Current release: [v0.2.0](https://github.com/go-ruby-parser/parser/tree/v0.2.0)**
+(2026-09-21), which closed fourteen grammar gaps — see
+[Grammar & limitations](grammar.md#what-v020-added).
 
 ## Install
 
 ```sh
-go get github.com/go-ruby-parser/parser
+go get github.com/go-ruby-parser/parser@v0.2.0
 ```
 
 ## Usage
