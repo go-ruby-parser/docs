@@ -1,7 +1,9 @@
 # Grammar & limitations
 
 go-ruby-parser accepts a broad, practical subset of Ruby 4.0, all
-differential-tested against MRI 4.0.5.
+differential-tested against MRI 4.0.5. This page describes **v0.2.0**
+(2026-09-21), which closed fourteen grammar gaps — see *What v0.2.0 added*
+below.
 
 ## What it parses
 
@@ -30,15 +32,60 @@ differential-tested against MRI 4.0.5.
   (`$g = …`), multiple assignment / destructuring, **adjacent string-literal
   concatenation** (`"a" "b"`).
 
+## What v0.2.0 added
+
+v0.2.0 (2026-09-21) closed fourteen gaps. Its own measure: **every one of the 68
+files in the pinned ruby/spec `language/` corpus now parses** — thirteen of them
+had not parsed at all before, so they had been contributing nothing to either
+column of any conformance measurement.
+
+- `%`-literal delimiters that are themselves significant — interpolation, `=`,
+  `\` inside `%w`/`%W`/`%i`/`%I`/`%q`/`%Q`
+- `class`, `module` and `def` as **primaries**, so they can be an operand
+  (`class C; end.foo`)
+- **dynamic-symbol** names in `alias` and `undef` (`alias :"b" :"a"`)
+- `$=` as a global variable name
+- `defined?(expr)` over a full expression, and the jump keywords
+  (`break`/`next`/`return`/`redo`/`retry`) in expression position
+- `:a=` immediately before `=>`
+- `{` nesting inside a lambda body
+- a **spaced argument list** distinguished from a brace block, and **nested
+  destructuring** block params (`|a, (b, (c, d))|`)
+- **block-local variables** (`{ |x; y| }`), carried on `ast.Block`
+- four pattern-matching gaps: a trailing comma in an array pattern, the
+  parenthesised `Const(…)` pattern, `in {"a": 0}`, and `in ^@a`
+- a **parenthesised receiver** as a multiple-assignment target
+- `for` loop variables beyond a bare name (`for @v in …`, `for (i, j), k in …`)
+
+Two of the fourteen were **silent mis-parses** rather than refusals, which is
+worse, because nothing diagnoses them:
+
+```ruby
+o.s (:a){ 1 }          # the brace block bound to :a, not to the call
+case [0,1,2,3]
+in [0, 1, ]            # the trailing comma was dropped, so a partial pattern
+  :partial             # became an exact one and this fell through to else
+else
+  :exact
+end
+```
+
 ## Known limitations
 
-These are not yet parsed (they remain on go-embedded-ruby's roadmap;
-contributions welcome):
+The three limitations this page listed before v0.2.0 — paren-less command calls
+with keyword/splat/block args, splat and default **block** parameters, and the
+positional `Class(a)` find-pattern — **all parse now**. Verified against v0.2.0
+with `parser.Parse`, with `ruby -c` (MRI 4.0.5) as the oracle.
 
-- paren-less command calls with keyword/splat/block args (`foo a: 1`)
-- splat/default **block** parameters (`{ |*a| }`, `{ |a = 1| }`) and empty `||`
-  block params (the spaced `{ | | }` is supported)
-- the positional `Class(a)` find-pattern (`Class[a]` is supported)
+What is left, from a 41-construct differential sweep against MRI 4.0.5 in which
+this was the only disagreement, and **0 over-permissive**:
+
+- **`BEGIN { }` / `END { }` blocks** do not parse. MRI accepts them.
+
+Four further files in the pinned ruby/spec `language/` corpus parse but stop
+later in **go-embedded-ruby's own compiler**, not here: `for_spec`, `block_spec`,
+`defined_spec` and `variables_spec`. Those are consumer-side work, tracked in the
+interpreter.
 
 ## Errors
 
