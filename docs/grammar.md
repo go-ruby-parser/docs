@@ -1,8 +1,8 @@
 # Grammar & limitations
 
 go-ruby-parser accepts a broad, practical subset of Ruby 4.0, all
-differential-tested against MRI 4.0.5. This page describes **v0.2.0**
-(2026-09-21), which closed fourteen grammar gaps — see *What v0.2.0 added*
+differential-tested against MRI 4.0.5. This page describes **v0.4.0**
+(2026-09-26); the grammar gaps closed in v0.2.0 are listed under *What v0.2.0 added*
 below.
 
 ## What it parses
@@ -74,18 +74,20 @@ end
 
 The three limitations this page listed before v0.2.0 — paren-less command calls
 with keyword/splat/block args, splat and default **block** parameters, and the
-positional `Class(a)` find-pattern — **all parse now**. Verified against v0.2.0
-with `parser.Parse`, with `ruby -c` (MRI 4.0.5) as the oracle.
+positional `Class(a)` find-pattern — **all parse now**. Re-verified against
+**v0.4.0** with `parser.Parse`, alongside a control that must fail (`BEGIN { }`),
+which did.
 
 What is left, from a 41-construct differential sweep against MRI 4.0.5 in which
 this was the only disagreement, and **0 over-permissive**:
 
 - **`BEGIN { }` / `END { }` blocks** do not parse. MRI accepts them.
 
-Four further files in the pinned ruby/spec `language/` corpus parse but stop
-later in **go-embedded-ruby's own compiler**, not here: `for_spec`, `block_spec`,
-`defined_spec` and `variables_spec`. Those are consumer-side work, tracked in the
-interpreter.
+An earlier revision of this page named four files in the pinned ruby/spec
+`language/` corpus — `for_spec`, `block_spec`, `defined_spec` and `variables_spec`
+— as parsing here but stopping later in go-embedded-ruby's compiler. **That no
+longer reproduces:** re-run on 2026-09-26 all four execute and report results
+(29, 163, 256 and 114 passing examples respectively).
 
 ## Errors
 
