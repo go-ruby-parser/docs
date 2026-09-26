@@ -12,14 +12,14 @@ macOS, windows); the suite additionally runs on all **six 64-bit targets** —
 `amd64` and `arm64` natively, `riscv64`/`loong64`/`ppc64le`/`s390x` under QEMU —
 and on `js/wasm` and `wasip1/wasm`.
 
-**Current release: [v0.2.0](https://github.com/go-ruby-parser/parser/tree/v0.2.0)**
-(2026-09-21), which closed fourteen grammar gaps — see
-[Grammar & limitations](grammar.md#what-v020-added).
+**Current release: [v0.4.0](https://github.com/go-ruby-parser/parser/tree/v0.4.0)**
+(2026-09-26). See [Grammar & limitations](grammar.md) for the surface and the one
+remaining gap. (go-embedded-ruby's interpreter currently pins v0.3.0.)
 
 ## Install
 
 ```sh
-go get github.com/go-ruby-parser/parser@v0.2.0
+go get github.com/go-ruby-parser/parser@v0.4.0
 ```
 
 ## Usage
