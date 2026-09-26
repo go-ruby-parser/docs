@@ -499,8 +499,8 @@
 
 <h1 id="grammar-limitations">Grammar &amp; limitations<a class="headerlink" href="#grammar-limitations" title="Permanent link">&para;</a></h1>
 <p>go-ruby-parser accepts a broad, practical subset of Ruby 4.0, all
-differential-tested against MRI 4.0.5. This page describes <strong>v0.2.0</strong>
-(2026-09-21), which closed fourteen grammar gaps — see <em>What v0.2.0 added</em>
+differential-tested against MRI 4.0.5. This page describes <strong>v0.4.0</strong>
+(2026-09-26); the grammar gaps closed in v0.2.0 are listed under <em>What v0.2.0 added</em>
 below.</p>
 <h2 id="what-it-parses">What it parses<a class="headerlink" href="#what-it-parses" title="Permanent link">&para;</a></h2>
 <ul>
@@ -566,17 +566,19 @@ worse, because nothing diagnoses them:</p>
 <h2 id="known-limitations">Known limitations<a class="headerlink" href="#known-limitations" title="Permanent link">&para;</a></h2>
 <p>The three limitations this page listed before v0.2.0 — paren-less command calls
 with keyword/splat/block args, splat and default <strong>block</strong> parameters, and the
-positional <code>Class(a)</code> find-pattern — <strong>all parse now</strong>. Verified against v0.2.0
-with <code>parser.Parse</code>, with <code>ruby -c</code> (MRI 4.0.5) as the oracle.</p>
+positional <code>Class(a)</code> find-pattern — <strong>all parse now</strong>. Re-verified against
+<strong>v0.4.0</strong> with <code>parser.Parse</code>, alongside a control that must fail (<code>BEGIN { }</code>),
+which did.</p>
 <p>What is left, from a 41-construct differential sweep against MRI 4.0.5 in which
 this was the only disagreement, and <strong>0 over-permissive</strong>:</p>
 <ul>
 <li><strong><code>BEGIN { }</code> / <code>END { }</code> blocks</strong> do not parse. MRI accepts them.</li>
 </ul>
-<p>Four further files in the pinned ruby/spec <code>language/</code> corpus parse but stop
-later in <strong>go-embedded-ruby's own compiler</strong>, not here: <code>for_spec</code>, <code>block_spec</code>,
-<code>defined_spec</code> and <code>variables_spec</code>. Those are consumer-side work, tracked in the
-interpreter.</p>
+<p>An earlier revision of this page named four files in the pinned ruby/spec
+<code>language/</code> corpus — <code>for_spec</code>, <code>block_spec</code>, <code>defined_spec</code> and <code>variables_spec</code>
+— as parsing here but stopping later in go-embedded-ruby's compiler. <strong>That no
+longer reproduces:</strong> re-run on 2026-09-26 all four execute and report results
+(29, 163, 256 and 114 passing examples respectively).</p>
 <h2 id="errors">Errors<a class="headerlink" href="#errors" title="Permanent link">&para;</a></h2>
 <p><code>Parse</code> returns a parse error carrying the line number; it never panics on
 malformed input. Unterminated literals (strings, regexps, heredocs, <code>%</code>-arrays)
