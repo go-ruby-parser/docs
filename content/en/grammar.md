@@ -1,11 +1,16 @@
-# Grammar & limitations
+---
+title: "Grammar & limitations"
+weight: 20
+---
+
+# Grammar & limitations {#grammar-limitations}
 
 go-ruby-parser accepts a broad, practical subset of Ruby 4.0, all
 differential-tested against MRI 4.0.5. This page describes **v0.4.0**
 (2026-09-26); the grammar gaps closed in v0.2.0 are listed under *What v0.2.0 added*
 below.
 
-## What it parses
+## What it parses {#what-it-parses}
 
 - **Literals:** integers (`Bignum`/arbitrary precision, radix `0x`/`0o`/`0b`/`0d`,
   underscores), floats (incl. **scientific `1.5e3`**), strings (double- **and
@@ -32,7 +37,7 @@ below.
   (`$g = …`), multiple assignment / destructuring, **adjacent string-literal
   concatenation** (`"a" "b"`).
 
-## What v0.2.0 added
+## What v0.2.0 added {#what-v020-added}
 
 v0.2.0 (2026-09-21) closed fourteen gaps. Its own measure: **every one of the 68
 files in the pinned ruby/spec `language/` corpus now parses** — thirteen of them
@@ -70,7 +75,7 @@ else
 end
 ```
 
-## Known limitations
+## Known limitations {#known-limitations}
 
 The three limitations this page listed before v0.2.0 — paren-less command calls
 with keyword/splat/block args, splat and default **block** parameters, and the
@@ -89,7 +94,7 @@ An earlier revision of this page named four files in the pinned ruby/spec
 longer reproduces:** re-run on 2026-09-26 all four execute and report results
 (29, 163, 256 and 114 passing examples respectively).
 
-## Errors
+## Errors {#errors}
 
 `Parse` returns a parse error carrying the line number; it never panics on
 malformed input. Unterminated literals (strings, regexps, heredocs, `%`-arrays)
