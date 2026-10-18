@@ -1,4 +1,9 @@
-# go-ruby-parser documentation
+---
+title: "Home"
+weight: 10
+---
+
+# go-ruby-parser documentation {#go-ruby-parser-documentation}
 
 **A pure-Go (CGO=0) Ruby front-end** — a stateful lexer, a recursive-descent +
 Pratt parser, and a typed AST. No cgo, no Prism, no shelling out to Ruby: the
@@ -13,16 +18,16 @@ macOS, windows); the suite additionally runs on all **six 64-bit targets** —
 and on `js/wasm` and `wasip1/wasm`.
 
 **Current release: [v0.4.0](https://github.com/go-ruby-parser/parser/tree/v0.4.0)**
-(2026-09-26). See [Grammar & limitations](grammar.md) for the surface and the one
+(2026-09-26). See [Grammar & limitations]({{< relref "grammar.md" >}}) for the surface and the one
 remaining gap. (go-embedded-ruby's interpreter currently pins v0.3.0.)
 
-## Install
+## Install {#install}
 
 ```sh
 go get github.com/go-ruby-parser/parser@v0.4.0
 ```
 
-## Usage
+## Usage {#usage}
 
 ```go
 import "github.com/go-ruby-parser/parser"
@@ -39,7 +44,7 @@ if err != nil {
 // prog is an *ast.Program; walk prog.Body ([]ast.Node).
 ```
 
-## Packages
+## Packages {#packages}
 
 | Import | Package | What it is |
 | --- | --- | --- |
@@ -48,7 +53,7 @@ if err != nil {
 | `github.com/go-ruby-parser/parser/lexer` | `lexer` | the stateful lexer (MRI `spaceSeen` semantics) |
 | `github.com/go-ruby-parser/parser/token` | `token` | the token kinds |
 
-## Design notes
+## Design notes {#design-notes}
 
 - **Stateful lexer.** Ruby's grammar is context-sensitive; the lexer tracks
   `SpaceBefore` (MRI's `spaceSeen`) plus a state seed so the same characters lex
@@ -57,4 +62,4 @@ if err != nil {
   bare `x` is a local-variable reference if assigned in scope, otherwise a method
   call on the implicit receiver.
 
-See [Grammar & limitations](grammar.md) for the full surface and the known gaps.
+See [Grammar & limitations]({{< relref "grammar.md" >}}) for the full surface and the known gaps.
